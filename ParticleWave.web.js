@@ -151,9 +151,15 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
       cursorEl.classList.toggle('ch-active', domHit || rectHit || canvasHit || projHit || sidebarHit);
     });
 
+    // ── Performance tier (low = older/weaker GPU) ─────────────────────────
+    const _cores = navigator.hardwareConcurrency || 4;
+    const _mem   = navigator.deviceMemory || 4;
+    const LOW_END = _cores <= 4 || _mem <= 4;
+    const MED_END = !LOW_END && (_cores <= 8 || _mem <= 8);
+
     // ── Renderer ──────────────────────────────────────────────────────────
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: !LOW_END, alpha: false });
+    renderer.setPixelRatio(LOW_END ? 1 : Math.min(window.devicePixelRatio, MED_END ? 1.5 : 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 1);
 
@@ -1732,8 +1738,8 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
     document.body.appendChild(modelViewerBg);
 
     // Separate THREE.js scene for the viewer
-    const viewerRenderer = new THREE.WebGLRenderer({ canvas: modelCanvas, antialias: true, alpha: true, premultipliedAlpha: false });
-    viewerRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const viewerRenderer = new THREE.WebGLRenderer({ canvas: modelCanvas, antialias: !LOW_END, alpha: true, premultipliedAlpha: false });
+    viewerRenderer.setPixelRatio(LOW_END ? 1 : Math.min(window.devicePixelRatio, MED_END ? 1.5 : 2));
     viewerRenderer.setSize(MODEL_W, MODEL_H, true);
     viewerRenderer.setClearColor(0x020100, 1);
     viewerRenderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -3439,7 +3445,9 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
     ];
 
     // ── Rectangular wave grid ─────────────────────────────────────────────
-    const COLS = 260, ROWS = 170, SPACING = 0.65;
+    const COLS = LOW_END ? 130 : MED_END ? 195 : 260;
+    const ROWS = LOW_END ?  85 : MED_END ? 128 : 170;
+    const SPACING = 0.65;
     const count = COLS * ROWS;
     const positions = new Float32Array(count * 3);
     const colors    = new Float32Array(count * 3);
@@ -3621,7 +3629,7 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
     ]);
 
     // ── Galaxy starfield background ───────────────────────────────────────
-    const STAR_COUNT = 4000;
+    const STAR_COUNT = LOW_END ? 1000 : MED_END ? 2500 : 4000;
     const starPos  = new Float32Array(STAR_COUNT * 3);
     const starCol  = new Float32Array(STAR_COUNT * 3);
     for (let i = 0; i < STAR_COUNT; i++) {
