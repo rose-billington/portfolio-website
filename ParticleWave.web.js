@@ -158,7 +158,7 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
     const MED_END = !LOW_END && (_cores <= 8 || _mem <= 8);
 
     // ── Renderer ──────────────────────────────────────────────────────────
-    const RENDER_W = 1280, RENDER_H = 720;
+    const RENDER_W = 1920, RENDER_H = 1080;
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false });
     renderer.setPixelRatio(1);
     renderer.setSize(RENDER_W, RENDER_H);
