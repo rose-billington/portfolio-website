@@ -158,9 +158,12 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
     const MED_END = !LOW_END && (_cores <= 8 || _mem <= 8);
 
     // ── Renderer ──────────────────────────────────────────────────────────
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: !LOW_END, alpha: false });
-    renderer.setPixelRatio(LOW_END ? 1 : Math.min(window.devicePixelRatio, MED_END ? 1.5 : 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const RENDER_W = 1280, RENDER_H = 720;
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false });
+    renderer.setPixelRatio(1);
+    renderer.setSize(RENDER_W, RENDER_H);
+    canvas.style.width  = '100vw';
+    canvas.style.height = '100vh';
     renderer.setClearColor(0x000000, 1);
 
     // ── Google Font + HUD animation styles ───────────────────────────────
@@ -360,8 +363,8 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
         padding:4px 10px 4px 8px;
         background:rgba(0,0,0,0.75);
         border:1px solid rgba(255,255,255,0.18);
-        backdrop-filter:blur(6px);
-        -webkit-backdrop-filter:blur(6px);
+        backdrop-filter:blur(4px);
+        -webkit-backdrop-filter:blur(4px);
         text-transform:uppercase;
         text-shadow:0 0 8px currentColor;
         clip-path:polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
@@ -1513,8 +1516,8 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
         z-index: 200;
         scrollbar-width: none;
         background: rgba(0,0,0,0.65);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
         border: 1px solid rgba(255,255,255,0.12);
         border-radius: 6px;
         box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 8px 48px rgba(0,0,0,0.6);
@@ -1636,8 +1639,8 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
         width: ${MODEL_W + 16}px;
         height: ${MODEL_H + 16}px;
         background: rgba(6,2,0,0.92);
-        backdrop-filter: blur(22px);
-        -webkit-backdrop-filter: blur(22px);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
         border: 1px solid rgba(232,125,13,0.32);
         box-shadow: 0 0 28px 4px rgba(232,125,13,0.10), inset 0 0 20px 2px rgba(232,125,13,0.04);
         border-radius: 10px;
@@ -4498,8 +4501,8 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
         min-width: 30px; height: 30px;
         padding: 0 10px;
         background: rgba(0,0,0,0.55);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
         border: 1px solid rgba(255,255,255,0.2);
         border-radius: 8px;
         box-shadow: 0 0 3px 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.08);
@@ -4907,9 +4910,8 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
     canvas.addEventListener('wheel', onProjWheel, { passive: false, capture: false });
 
     const onResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.aspect = RENDER_W / RENDER_H;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
     };
     window.addEventListener('resize', onResize);
 

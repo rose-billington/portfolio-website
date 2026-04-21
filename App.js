@@ -95,7 +95,8 @@ const CLIP = (cut) =>
   IS_WEB
     ? { clipPath: `polygon(0 0,calc(100% - ${cut}px) 0,100% ${cut}px,100% 100%,${cut}px 100%,0 calc(100% - ${cut}px))` }
     : {};
-const BLUR = IS_WEB ? { backdropFilter:'blur(14px)', WebkitBackdropFilter:'blur(14px)' } : {};
+const _lowEnd = IS_WEB && ((navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 4) <= 4);
+const BLUR = IS_WEB && !_lowEnd ? { backdropFilter:'blur(6px)', WebkitBackdropFilter:'blur(6px)' } : {};
 
 // ── HUD overlay atoms ─────────────────────────────────────────────────────────
 const LINE_COL = 'rgba(255,255,255,0.22)';
