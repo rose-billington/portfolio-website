@@ -3445,8 +3445,8 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
     ];
 
     // ── Rectangular wave grid ─────────────────────────────────────────────
-    const COLS = 0;
-    const ROWS = 0;
+    const COLS = 130;
+    const ROWS = 85;
     const SPACING = 0.65;
     const count = COLS * ROWS;
     const positions = new Float32Array(count * 3);
@@ -3629,7 +3629,7 @@ export default function ParticleWave({ progressRef, setScrollEnabled, solarReady
     ]);
 
     // ── Galaxy starfield background ───────────────────────────────────────
-    const STAR_COUNT = 0;
+    const STAR_COUNT = 2500;
     const starPos  = new Float32Array(STAR_COUNT * 3);
     const starCol  = new Float32Array(STAR_COUNT * 3);
     for (let i = 0; i < STAR_COUNT; i++) {
